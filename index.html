@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GitHub → Pages URL Generator</title>
+  <style>
+    body { font-family: Arial; padding: 40px; max-width: 600px; margin: auto; }
+    input { width: 100%; padding: 10px; margin: 10px 0; }
+    button { padding: 10px 20px; }
+    .result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h2>GitHub URL → Pages URL</h2>
+
+  <input id="githubUrl" placeholder="https://github.com/username/repository">
+  <button onclick="convert()">Generate</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function convert() {
+      const input = document.getElementById("githubUrl").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      try {
+        const url = new URL(input);
+        const parts = url.pathname.split("/").filter(Boolean);
+
+        if (parts.length < 2) {
+          resultDiv.textContent = "Invalid GitHub repository URL";
+          return;
+        }
+
+        const username = parts[0];
+        const repo = parts[1];
+
+        const pagesUrl = `https://${username}.github.io/${repo}/`;
+
+        resultDiv.innerHTML = `
+          Pages URL:<br>
+          <a href="${pagesUrl}" target="_blank">${pagesUrl}</a>
+        `;
+      } catch {
+        resultDiv.textContent = "Invalid URL format";
+      }
+    }
+  </script>
+</body>
+</html>
